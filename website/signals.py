@@ -11,4 +11,4 @@ def create_user_profile(sender, instance, created, **kwargs):
 @receiver(post_save, sender=ShortLink)
 def increment_user_count(sender, instance, created, **kwargs):
     if created:
-        instance.user.increment_shorturls_count()
+        instance.profile.increment_shorturls_count()
