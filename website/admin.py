@@ -8,5 +8,9 @@ class ProfileAdmin(admin.ModelAdmin):
         shorturls_allowed = "♾️" if profile.shorturls_allowed == -1 else profile.shorturls_allowed
         return f"{profile.shorturls_count_today} / {shorturls_allowed}"
 
+class ShortLinkAdmin(admin.ModelAdmin):
+    list_display = ('code', 'profile', 'password_protected', 'url')
+    search_fields = ('code', 'url')
+
 admin.site.register(Profile, ProfileAdmin)
-admin.site.register(ShortLink)
+admin.site.register(ShortLink, ShortLinkAdmin)

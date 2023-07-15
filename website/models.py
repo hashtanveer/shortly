@@ -61,7 +61,7 @@ class Profile(models.Model):
     
     @property
     def total_shorturls(self):
-        return ShortLink.objects.filter(user=self).count()
+        return ShortLink.objects.filter(profile=self).count()
 
     def increment_shorturls_count(self):
         self._shorturls_count_today += 1
@@ -77,7 +77,7 @@ def get_guest_profile():
     return Profile.objects.get(user=guest_user).id
 
 class ShortLink(models.Model):
-    user = models.ForeignKey(Profile, default=get_guest_profile, on_delete=models.CASCADE)
+    profile = models.ForeignKey(Profile, default=get_guest_profile, on_delete=models.CASCADE)
     code = models.CharField(max_length=20,primary_key=True,unique=True)
     url = models.URLField(max_length=settings.MAX_URL_LENGTH ,null=False,blank=False)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -89,7 +89,10 @@ class ShortLink(models.Model):
         return self.code
     
     def save(self, *args, **kwargs):
-        if self.password:
+        if self.password and not self.password_protected:
+            self.password = None
+
+        if self.password_protected and self.password:
             self.password = make_password(self.password)
         
         super().save(*args, **kwargs)
@@ -104,5 +107,5 @@ class ShortLink(models.Model):
     
     def remove_password(self):
         self.password_protected = False
-        self.password = ""
+        self.password = None
         self.save()
