@@ -4,3 +4,7 @@ from rest_framework.views import APIView
 class HomePageView(APIView):
     def get(self, request, format=None):
         return render(request,'website/home.html')
+    
+class LoginPageView(APIView):
+    def get(self, request, format=None):
+        return render(request, 'account/login.html')
