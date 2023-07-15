@@ -11,7 +11,7 @@ def get_guest_user():
     return User.objects.filter(name=settings.GUEST_USERNAME).first().id
 
 class Profile(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
     _shorturls_count_today = models.PositiveIntegerField(default=0)
     last_reset = models.DateTimeField(auto_now_add=True)
     premium_till = models.DateTimeField(auto_now_add=True)
@@ -78,7 +78,7 @@ def get_guest_profile():
 
 class ShortLink(models.Model):
     profile = models.ForeignKey(Profile, default=get_guest_profile, on_delete=models.CASCADE)
-    code = models.CharField(max_length=20,primary_key=True,unique=True)
+    code = models.CharField(max_length=20,unique=True)
     url = models.URLField(max_length=settings.MAX_URL_LENGTH ,null=False,blank=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateField(auto_now=True)
@@ -96,6 +96,7 @@ class ShortLink(models.Model):
             self.password = make_password(self.password)
         
         super().save(*args, **kwargs)
+
 
     def check_password(self, input_password):
         return _check_password(input_password, self.password)
