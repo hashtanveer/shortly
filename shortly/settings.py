@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'account',
+    'website',
 ]
 
 MIDDLEWARE = [
@@ -148,3 +149,7 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:80",
     "http://127.0.0.1:80",
 ]
+
+SHORTURLS_ALLOWED_FREE = 10
+SHORTURLS_ALLOWED_PREMIUM = -1
+MAX_URL_LENGTH = 255
