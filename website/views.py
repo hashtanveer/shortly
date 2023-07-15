@@ -21,7 +21,7 @@ class CreateShortLinkView(APIView):
         form = ShortLinkCreateForm(request.data)
         if not form.is_valid():
             return Response(form.errors, status=status.HTTP_400_BAD_REQUEST)
-        
+
         kwargs = form.cleaned_data
         if request.user.is_authenticated:
             kwargs['profile'] = request.user.profile
@@ -48,4 +48,5 @@ class ListShortLinkView(APIView):
         profile = request.user.profile
         qs = ShortLink.objects.filter(profile=profile).order_by('created_at')[skip:skip+amount]
         shortlinks = ShortLinkSerializer(qs, many=True).data
+
         return Response({"shortlinks" : shortlinks}, status=status.HTTP_200_OK)

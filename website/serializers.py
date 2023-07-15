@@ -5,4 +5,4 @@ from .models import ShortLink
 class ShortLinkSerializer(serializers.ModelSerializer):
     class Meta:
         model = ShortLink
-        fields = ['code', 'created_at', 'password_protected']
+        fields = ['code', 'created_at', 'password_protected', 'url']
