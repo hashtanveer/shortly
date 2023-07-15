@@ -19,11 +19,8 @@ class Profile(models.Model):
     def __str__(self):
         return self.user.name
 
-    def can_make_detection(self):
+    def can_make_shortlink(self):
         #Always allow Guest User
-        if self.user.id == get_guest_user():
-            return True
-        
         if self.shorturls_allowed == -1:
             return True
         if self.last_reset.date() < timezone.now().date():

@@ -28,6 +28,10 @@ class CreateShortLinkView(APIView):
         else:
             kwargs['profile']= Profile.objects.get(id=get_guest_profile())
 
+        #Check qouta 
+        if not kwargs['profile'].can_make_shortlink():
+            return Response({"errors":["Your profile crossed limit for Link generation"]})
+
         shortcode = get_short_code()
         kwargs['code'] = shortcode
         shortlink = ShortLink.objects.create(**kwargs)
