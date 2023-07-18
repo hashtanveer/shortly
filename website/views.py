@@ -14,7 +14,11 @@ class HomePageView(APIView):
     
 class LoginPageView(APIView):
     def get(self, request, format=None):
-        return render(request, 'account/login.html')
+        return render(request, 'account/signin.html')
+
+class SignupView(APIView):
+    def get(self, request, format=None):
+        return render(request, 'account/signup.html')
 
 class CreateShortLinkView(APIView):
     def post(self, request, format=None):

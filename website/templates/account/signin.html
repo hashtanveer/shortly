@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<!-- Created By CodingNepal -->
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8" />
+    <title>Login | PlantDiseaseDetector</title>
+    <link rel="stylesheet" href="/static/css/style.css" />
+    <script>const post_url = "{% url 'account:signin' %}";
+            const home_url = "{% url 'website:home' %}"
+    </script>
+    <script type="text/javascript"  src="/static/js/saveJWT.js"></script>
+  </head>
+
+  <body>
+    <div class="wrapper">
+      <div class="title">Login</div>
+      <form id="submit-form">
+        {% csrf_token %}
+        <div class="field">
+          <input name="email" type="text" required />
+          <label>Email Address</label>
+        </div>
+        <div class="field">
+          <input  name="password" type="password" required />
+          <label>Password</label>
+        </div>
+        <div class="content">
+          <div class="checkbox">
+            <input type="checkbox" id="remember-me" />
+            <label for="remember-me">Remember me</label>
+          </div>
+          <div class="pass-link">
+            <a href="#">Forgot password?</a>
+          </div>
+        </div>
+        <div class="field">
+          <input type="button"  onclick="Submit(event)" value="Login" />
+        </div> 
+        <div class="signup-link">
+          Not a member? <a href= "{% url 'website:register' %}">Signup now</a>
+        </div>
+      </form>
+    </div>
+  </body>
+</html>

@@ -233,8 +233,15 @@
       const form = document.getElementById('urlform');
       const formData = new FormData(form);
 
+      const access_token = localStorage.getItem('access_token');
+
+      var headers = {};
+      if(access_token){
+          headers['Authorization'] = "Bearer " + access_token; 
+      }
 
       let newImage = await fetch(submit_url,  {
+        headers : headers,
         method: 'POST',
         body: formData
       })
