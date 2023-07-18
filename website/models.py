@@ -13,8 +13,8 @@ def get_guest_user():
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     _shorturls_count_today = models.PositiveIntegerField(default=0)
-    last_reset = models.DateTimeField(auto_now_add=True)
-    premium_till = models.DateTimeField(auto_now_add=True)
+    last_reset = models.DateTimeField(default=timezone.now)
+    premium_till = models.DateTimeField(default=timezone.now)
 
     def __str__(self):
         return self.user.name

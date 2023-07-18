@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from rest_framework.views import APIView
 from rest_framework import status
 from rest_framework.response import Response
@@ -20,7 +20,8 @@ class CreateShortLinkView(APIView):
     def post(self, request, format=None):
         form = ShortLinkCreateForm(request.data)
         if not form.is_valid():
-            return Response(form.errors, status=status.HTTP_400_BAD_REQUEST)
+            return Response({"success" : False,"errors" : form.errors}
+                            ,status=status.HTTP_400_BAD_REQUEST)
 
         kwargs = form.cleaned_data
         if request.user.is_authenticated:
@@ -36,7 +37,30 @@ class CreateShortLinkView(APIView):
         kwargs['code'] = shortcode
         shortlink = ShortLink.objects.create(**kwargs)
 
-        return Response(shortlink.code)
+        return Response({"success": True ,"code" : shortlink.code})
+    
+class ShortLinkView(APIView):
+    def get(self, request,code ,format=None):
+        qs = ShortLink.objects.filter(code=code)
+        if not qs.count():
+            return render(request,'website/404.html')
+
+        shortlink = qs.first()
+        if not shortlink.password_protected:
+            return redirect(shortlink.url)
+        return render(request, 'website/askPassword.html',context={'post_url' : f"/{shortlink.code}/"})
+
+    def post(self, request, code, format=None):
+        qs = ShortLink.objects.filter(code=code)
+        if not qs.count():
+            return render(request,'website/404.html')
+
+        shortlink = qs.first()
+        if shortlink.check_password(request.data.get('password')):
+            return redirect(shortlink.url)
+
+        return render(request,'website/askPassword.html', context={'error_message': "Incorrect Password"})
+
 
 class ListShortLinkView(APIView):
     permission_classes = [ IsAuthenticated ]
