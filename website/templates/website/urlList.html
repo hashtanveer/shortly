@@ -1,0 +1,43 @@
+<div >
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>Code</th>
+                <th>Url</th>
+                <th>Security</th>
+                <th>Created At</th>
+            </tr>
+        </thead>
+        <tbody>
+            
+            {% for  link in shortlinks %}
+            <tr>
+                <td><a href="/my/{{link.code}}">{{link.code}}</a></td>
+                <td>{{ link.url|slice:":50" }}{% if link.url|length > 40 %}...{% endif %}</td>
+                <td>{% if link.password_protected %}🔒{% else %}🌎{% endif %}</td>
+                <td>{{ link.created_at}}</td>
+            </tr>
+            {% endfor %}
+                
+        </tbody>
+    </table>
+
+</div>
+
+<nav aria-label="...">
+  <ul class="pagination justify-content-center">
+
+    <li class="page-item  {% if not prev_url %} disabled {% endif %}">
+      <a class="page-link" href="{% url 'website:myurls' %}{{prev_url}}">Previous</a>
+    </li>
+    
+    {% for skip in skips %}
+        <li class="page-item {% if skip == current %} active aria-current="page {% endif %}"><a class="page-link" href="{% url 'website:myurls' %}?skip={{skip}}&amount={{amount}}">{{forloop.counter}}</a></li>
+        
+    {% endfor %}
+    
+    <li class="page-item {% if not next_url %} disabled {% endif %}">
+      <a class="page-link" href="{% url 'website:myurls' %}{{next_url}}">Next</a>
+    </li>
+  </ul>
+</nav>

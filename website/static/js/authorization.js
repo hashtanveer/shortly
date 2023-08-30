@@ -1,7 +1,7 @@
 // Check if access token and refresh token are present in localStorage
 const accessToken = localStorage.getItem('access_token');
 const refreshToken = localStorage.getItem('refresh_token');
-
+var isAuthorized = false;
 // Get the current page URL
 const currentPageUrl = window.location.href;
 

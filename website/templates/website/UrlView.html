@@ -1,0 +1,24 @@
+<div class="container d-flex justify-content-center align-items-center vh-100">
+    <div class="card rounded p-4">
+      <h2 class="text-center">Short URL Details</h2>
+      <p><strong>Short Code:</strong> <a href="/{{shortlink.code}}">{{shortlink.code}}</a></p>
+      <p><strong>Destination URL:</strong> <a href="{{ shortlink.url }}">{{ shortlink.url }}</a></p>
+      <div class="d-flex justify-content-between">
+        <button class="btn btn-primary" onclick="action('removePassword');">Remove Password</button>
+        <button class="btn btn-danger" onclick="action('deleteUrl');">Delete URL</button>
+      </div>
+      <div class="mt-3">
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" id="passwordCheckbox" 
+          {% if shortlink.password_protected %}checked{% endif %}>
+          <label class="form-check-label" for="passwordCheckbox">Ask Password 🔒</label>
+        </div>
+        <div class="mt-2">
+          <input type="text" class="form-control" id="passwordField" placeholder="Password" ">
+        </div>
+        <div class="text-center"> <!-- Center the Save button -->
+          <button class="btn btn-success mt-3" onclick="action('changePassword');">Save</button>
+        </div>
+      </div>
+    </div>
+  </div>

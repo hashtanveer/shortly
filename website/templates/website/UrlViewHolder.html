@@ -1,0 +1,76 @@
+{% extends 'website/base.html' %}
+
+{% block head %}
+    <script> 
+        const loginUrl = "{% url 'website:login' %}";
+        const baseUrl = origin;
+    </script>
+    <script src="/static/js/authorization.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+        body{
+            background: #f6f8ff;
+            font-family: "Inter", Arial;
+        }
+        
+        a:link, a:visited {
+            text-decoration: none;
+        }
+
+        
+    </style>
+{% endblock  %}
+
+{% block content %}
+    <div id="mainContainer">
+        
+    </div>
+
+    <script>
+        const mainContainer = document.getElementById("mainContainer");
+
+        const baseInfoUrl = "/my/edit/";
+
+        const code = "{{code}}";
+
+        var url = baseInfoUrl +""+ code ;
+        
+        var headers = {};
+        headers["Authorization"] = "Bearer "+ localStorage.getItem('access_token');
+        fetch(url,
+        {headers : headers})
+        .then(response =>{
+            return response.text();  
+        })
+        .then(html =>{
+            mainContainer.innerHTML = html;
+        })
+        .catch(error =>{
+            console.error(error);
+        })
+
+        function action(action){
+            console.log(action);
+            var form = new FormData();
+            form.append('action',action);
+
+            if(action == 'changePassword'){
+                const usePassword = document.getElementById("passwordCheckbox").checked;
+                const password = document.getElementById("passwordField").value;
+
+                form.append('password', password);
+                form.append('password_protected' , usePassword);
+            }
+            var headers = {};
+            headers["Authorization"] = "Bearer "+ localStorage.getItem('access_token');
+
+            fetch(url,{
+                headers : headers,
+                method : "POST",
+                body: form
+            });
+            
+        }
+    </script>
+{% endblock  %}

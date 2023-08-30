@@ -101,7 +101,7 @@ class ShortLink(models.Model):
     def set_password(self, password):
         self.password_protected = True
         self.password = make_password(password)
-        self.save(using=self._db)
+        self.save()
     
     def remove_password(self):
         self.password_protected = False

@@ -1,0 +1,56 @@
+{% extends 'website/base.html' %}
+
+
+{% block head %}
+    <script> const loginUrl = "{% url 'website:login' %}" </script>
+    <script src="/static/js/authorization.js"></script>
+
+    <style>
+        body{
+            background: #f6f8ff;
+            font-family: "Inter", Arial;
+        }
+        #mainContainer {
+            margin: 30px;
+        }
+        a:link, a:visited {
+            text-decoration: none;
+        }
+
+    </style>
+{% endblock  %}
+
+{% block content %}
+    <div id="mainContainer">
+        
+    </div>
+
+    <script>
+        const mainContainer = document.getElementById("mainContainer");
+
+        const baseInfoUrl = "{% url 'website:urlsInfo' %}";
+
+        const amount = "{{amount}}";
+        const skip = "{{skip}}";
+
+        var url = baseInfoUrl +"?amount=" +amount + "&skip=" + skip;
+        console.log(url);
+        var headers = {};
+        headers["Authorization"] = "Bearer "+ localStorage.getItem('access_token');
+        fetch(url,
+        {headers : headers})
+        .then(response =>{
+            return response.text();  
+        })
+        .then(html =>{
+            mainContainer.innerHTML = html;
+        })
+        .catch(error =>{
+            console.error(error);
+        })
+
+        function visit(url){
+            
+        }
+    </script>
+{% endblock  %}
